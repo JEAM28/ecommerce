@@ -156,7 +156,10 @@ export class UsersRepository {
     },
   ];
 
-  getUsers() {
-    return this.users;
+  getUsers(page: number, limit: number) {
+    const start = (page - 1) * limit;
+    const end = start + +limit;
+    const users = this.users.slice(start, end);
+    return users.map(({ password, ...users }) => users);
   }
 }
