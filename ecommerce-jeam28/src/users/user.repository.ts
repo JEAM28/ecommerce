@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-type Users = {
+export type User = {
   id: number;
   email: string;
   name: string;
@@ -13,7 +13,7 @@ type Users = {
 
 @Injectable()
 export class UsersRepository {
-  private users: Users[] = [
+  private users: User[] = [
     {
       id: 1,
       email: 'jesus@gmail.com',
@@ -165,6 +165,34 @@ export class UsersRepository {
 
   getUserById(id: string) {
     const user = this.users.find((user) => user.id === +id);
+    const { password, ...userWithoutPassword } = user;
+    return userWithoutPassword;
+  }
+
+  createUser(user: User) {
+    const id = this.users.length + 1;
+    user.id = id;
+    this.users.push(user);
+    const { password, ...userWithoutPassword } = user;
+    return userWithoutPassword;
+  }
+
+  updateUser(id: number, user: User) {
+    const oldUser = this.users.find((user) => user.id === +id);
+    if (!oldUser) {
+      return 'usuario no existe';
+    }
+    const updateUser = { ...oldUser, ...user };
+
+    const index = this.users.findIndex((user) => user.id === +id);
+    this.users[index] = updateUser;
+    const { password, ...userWithoutPassword } = updateUser;
+    return userWithoutPassword;
+  }
+
+  deleteUser(id: number) {
+    const index = this.users.findIndex((user) => user.id === +id);
+    const user = this.users[index];
     const { password, ...userWithoutPassword } = user;
     return userWithoutPassword;
   }

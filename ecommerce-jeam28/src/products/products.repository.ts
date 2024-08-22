@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-type Product = {
+export type Product = {
   id: number;
   name: string;
   description: string;
@@ -104,7 +104,35 @@ export class ProductsRepository {
     },
   ];
 
-  getProducts() {
-    return this.products;
+  getProducts(page: number, limit: number) {
+    const start = (page - 1) * limit;
+    const end = start + +limit;
+    const products = this.products.slice(start, end);
+    return products;
+  }
+
+  getProductById(id: string) {
+    const products = this.products.find((products) => products.id === +id);
+    return products;
+  }
+
+  createProducts(product: Product) {
+    const id = this.products.length + 1;
+    product.id = id;
+    this.products.push(product);
+    return product;
+  }
+
+  updateProducts(id: string, product: Product) {
+    const oldProduct = this.products.find((product) => product.id === +id);
+    if (!oldProduct) {
+      return 'producto no existe';
+    }
+    const updateProducts = { ...oldProduct, ...product };
+
+    const index = this.products.findIndex((product) => product.id === +id);
+    product = this.products[index];
+
+    return updateProducts;
   }
 }
