@@ -162,4 +162,10 @@ export class UsersRepository {
     const users = this.users.slice(start, end);
     return users.map(({ password, ...users }) => users);
   }
+
+  getUserById(id: string) {
+    const user = this.users.find((user) => user.id === +id);
+    const { password, ...userWithoutPassword } = user;
+    return userWithoutPassword;
+  }
 }
