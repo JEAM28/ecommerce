@@ -196,4 +196,8 @@ export class UsersRepository {
     const { password, ...userWithoutPassword } = user;
     return userWithoutPassword;
   }
+
+  getUserByEmail(email: string) {
+    return this.users.find((user) => user.email === email);
+  }
 }
