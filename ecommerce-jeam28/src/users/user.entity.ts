@@ -1,9 +1,16 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Orders } from 'src/orders/orders.entity';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  JoinColumn,
+} from 'typeorm';
 
 @Entity({
   name: 'USERS',
 })
-export class User {
+export class Users {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -30,4 +37,8 @@ export class User {
 
   @Column({ type: 'boolean', default: false })
   isAdmin: boolean;
+
+  @OneToMany(() => Orders, (order) => order.user)
+  @JoinColumn({ name: 'orders_id' })
+  orders: Orders[];
 }
