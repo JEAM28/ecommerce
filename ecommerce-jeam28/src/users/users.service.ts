@@ -1,5 +1,4 @@
-import { Injectable } from '@nestjs/common';
-import { User, UsersRepository } from './user.repository';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Users } from './user.entity';
 import { Repository } from 'typeorm';
@@ -15,22 +14,43 @@ export class UsersService {
     const start = (page - 1) * limit;
     const end = start + +limit;
     users = users.slice(start, end);
-    return users.map(({ password, ...user }) => user);
+    // return users.map(({ password, ...user }) => user);
+    return users;
   }
 
-  getUserById(id: string) {
-    return this.userRepository.getUserById(id);
+  async getUserById(id: string) {
+    const user = await this.userRepository.findOne({
+      where: { id },
+      relations: {
+        orders: true,
+      },
+    });
+    if (!user) {
+      throw new NotFoundException('usuario no existe');
+    }
+    // const { password, ...userWithoutPassword} = user
+    // return userWithoutPassword
+    return user;
   }
 
-  createUser(user: User) {
-    return this.userRepository.createUser(user);
+  async createUser(user: Users) {
+    const newUser = await this.userRepository.save(user);
+    return newUser;
   }
 
-  updateUser(id: number, user: User) {
-    return this.userRepository.updateUser(id, user);
+  async updateUser(id: string, user: Users) {
+    await this.userRepository.update(id, user);
+    const updateUser = await this.userRepository.findOneBy({ id });
+    return user;
   }
 
-  deleteUser(id: number) {
-    return this.userRepository.deleteUser(id);
+  async deleteUser(id: string) {
+    const user = await this.userRepository.findOneBy({ id });
+    this.userRepository.remove(user);
+    return user;
+  }
+
+  async getUserByEmail(email: string) {
+    return await this.userRepository.findOneBy({ email });
   }
 }

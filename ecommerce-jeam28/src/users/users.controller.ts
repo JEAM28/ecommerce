@@ -8,10 +8,12 @@ import {
   Put,
   Query,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './user.repository';
 import { AuthGuard } from 'src/guard/auth.guard';
+import { ExcludeUserCredentials } from 'src/helper/interceptor';
 
 @Controller('users')
 export class UsersController {
@@ -27,6 +29,7 @@ export class UsersController {
   }
 
   @Post()
+  @UseInterceptors(ExcludeUserCredentials)
   createUser(@Body() user: any) {
     return this.usersService.createUser(user);
   }
