@@ -12,11 +12,17 @@ export class ExcludeUserCredentials implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
       map((user) => {
-        if (user && typeof user === 'object') {
-          const { password, isAdmin, ...result } = user;
-          return result;
+        if (Array.isArray(user)) {
+          return user.map((user) => {
+            if (user.password) delete user.password;
+            if (user.isAdmin) delete user.isAdmin;
+            return user;
+          });
+        } else {
+          if (user.password) delete user.password;
+          if (user.isAdmin) delete user.isAdmin;
+          return user;
         }
-        return user;
       }),
     );
   }

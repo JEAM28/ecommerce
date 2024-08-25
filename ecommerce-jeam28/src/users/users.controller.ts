@@ -11,9 +11,9 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { User } from './user.repository';
 import { AuthGuard } from 'src/guard/auth.guard';
 import { ExcludeUserCredentials } from 'src/helper/interceptor';
+import { Users } from './user.entity';
 
 @Controller('users')
 export class UsersController {
@@ -21,6 +21,7 @@ export class UsersController {
 
   @Get()
   @UseGuards(AuthGuard)
+  @UseInterceptors(ExcludeUserCredentials)
   getUsers(@Query('page') page: number, @Query('limit') limit: number) {
     if (page && limit) {
       return this.usersService.getUsers(page, limit);
@@ -36,18 +37,19 @@ export class UsersController {
 
   @Put('id')
   @UseGuards(AuthGuard)
-  updateUser(@Param('id') id: number, @Body() user: User) {
+  updateUser(@Param('id') id: string, @Body() user: Users) {
     return this.usersService.updateUser(id, user);
   }
 
   @Delete('id')
   @UseGuards(AuthGuard)
-  deleteUser(@Param('id') id: number) {
+  deleteUser(@Param('id') id: string) {
     return this.usersService.deleteUser(id);
   }
 
   @Get(':id')
   @UseGuards(AuthGuard)
+  @UseInterceptors(ExcludeUserCredentials)
   getUserById(@Param('id') id: string) {
     return this.usersService.getUserById(id);
   }

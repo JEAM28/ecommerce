@@ -10,12 +10,12 @@ export class UsersService {
   ) {}
 
   async getUsers(page: number, limit: number) {
-    let users = await this.userRepository.find();
+    let user = await this.userRepository.find();
     const start = (page - 1) * limit;
     const end = start + +limit;
-    users = users.slice(start, end);
+    user = user.slice(start, end);
     // return users.map(({ password, ...user }) => user);
-    return users;
+    return user;
   }
 
   async getUserById(id: string) {
@@ -47,7 +47,7 @@ export class UsersService {
   async deleteUser(id: string) {
     const user = await this.userRepository.findOneBy({ id });
     this.userRepository.remove(user);
-    return user;
+    return `usuario con id: ${id} se elimino correctamente`;
   }
 
   async getUserByEmail(email: string) {

@@ -11,6 +11,7 @@ import {
 import { ProductsService } from './products.service';
 import { Product } from './products.repository';
 import { AuthGuard } from 'src/guard/auth.guard';
+import { Products } from './products.entity';
 
 @Controller('products')
 export class ProductsController {
@@ -31,13 +32,13 @@ export class ProductsController {
 
   @Post()
   @UseGuards(AuthGuard)
-  createProducts(@Body() product: Product) {
-    return this.productsService.createProducts(product);
+  aggProducts(@Body() product: Product) {
+    return this.productsService.aggProducts(product);
   }
 
   @Put()
   @UseGuards(AuthGuard)
-  updateProducts(@Param('id') id: string, @Body() product: Product) {
+  updateProducts(@Param('id') id: string, @Body() product: Products) {
     return this.productsService.updateProducts(id, product);
   }
 }
