@@ -11,29 +11,31 @@ export class OrderService {
   constructor(
     @InjectRepository(Orders)
     private ordersRepository: Repository<Orders>,
-    @InjectRepository(Orders)
+    @InjectRepository(OrderDetails)
     private orderDetailsRepository: Repository<OrderDetails>,
-    @InjectRepository(Orders)
+    @InjectRepository(Users)
     private usersRepository: Repository<Users>,
-    @InjectRepository(Orders)
-    private ProductsRepository: Repository<Products>,
+    @InjectRepository(Products)
+    private productsRepository: Repository<Products>,
   ) {}
 
   async aggOrder(userId: string, products: any) {
     let total = 0;
     const user = await this.usersRepository.findOneBy({ id: userId });
     if (!user) {
-      throw new NotFoundException('usuario no existe');
+      throw new NotFoundException('usuario no encontrado');
     }
     const order = new Orders();
-    order.date = new Date();
+    const now = new Date();
+    const localDate = new Date(now.getTime() - now.getTimezoneOffset() * 60000);
+    order.date = localDate;
     order.user = user;
 
     const newOrder = await this.ordersRepository.save(order);
 
     const productsArray = await Promise.all(
       products.map(async (element) => {
-        const product = await this.ProductsRepository.findOneBy({
+        const product = await this.productsRepository.findOneBy({
           id: element.id,
         });
         if (!product) {
@@ -41,12 +43,40 @@ export class OrderService {
         }
         total += Number(product.price);
 
-        await this.ProductsRepository.update(
+        await this.productsRepository.update(
           { id: element.id },
           { stock: product.stock - 1 },
         );
         return product;
       }),
     );
+
+    const orderDetail = new OrderDetails();
+    orderDetail.price = Number(Number(total).toFixed(2));
+    orderDetail.products = productsArray;
+    orderDetail.order = newOrder;
+
+    await this.orderDetailsRepository.save(orderDetail);
+    return await this.ordersRepository.findOne({
+      where: { id: newOrder.id },
+      relations: {
+        orderDetails: true,
+      },
+    });
+  }
+
+  getOrder(id: string) {
+    const order = this.ordersRepository.findOne({
+      where: { id },
+      relations: {
+        orderDetails: {
+          products: true,
+        },
+      },
+    });
+    if (!order) {
+      throw new NotFoundException('orden no encontrada');
+    }
+    return order;
   }
 }

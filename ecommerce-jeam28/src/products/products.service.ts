@@ -1,5 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { Product, ProductsRepository } from './products.repository';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Products } from './products.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -34,8 +37,14 @@ export class ProductsService {
     }
   }
 
-  async aggProducts(product: Product) {
+  async aggProducts() {
     const categories = await this.categoriesRepository.find();
+
+    if (!categories) {
+      throw new NotFoundException(
+        'primero debes ejecutar el seeder de categorias',
+      );
+    }
     data?.map(async (element) => {
       const category = categories.find(
         (category) => category.name === element.category,
@@ -47,6 +56,14 @@ export class ProductsService {
       product.imgUrl = element.imgUrl;
       product.stock = element.stock;
       product.category = category;
+
+      await this.productsRepository
+        .createQueryBuilder()
+        .insert()
+        .into(Products)
+        .values(product)
+        .orUpdate(['description', 'price', 'imgUrl', 'stock'], ['name'])
+        .execute();
     });
     return 'productos agregados con exito';
   }

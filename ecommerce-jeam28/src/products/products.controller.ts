@@ -25,18 +25,17 @@ export class ProductsController {
     return this.productsService.getProducts(1, 5);
   }
 
+  @Get('seeder')
+  aggProducts() {
+    return this.productsService.aggProducts();
+  }
+
   @Get(':id')
   getProductById(@Param('id') id: string) {
     return this.productsService.getProductById(id);
   }
 
-  @Post()
-  @UseGuards(AuthGuard)
-  aggProducts(@Body() product: Product) {
-    return this.productsService.aggProducts(product);
-  }
-
-  @Put()
+  @Put(':id')
   @UseGuards(AuthGuard)
   updateProducts(@Param('id') id: string, @Body() product: Products) {
     return this.productsService.updateProducts(id, product);

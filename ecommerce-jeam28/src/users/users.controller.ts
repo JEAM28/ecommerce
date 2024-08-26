@@ -35,13 +35,13 @@ export class UsersController {
     return this.usersService.createUser(user);
   }
 
-  @Put('id')
+  @Put(':id')
   @UseGuards(AuthGuard)
   updateUser(@Param('id') id: string, @Body() user: Users) {
     return this.usersService.updateUser(id, user);
   }
 
-  @Delete('id')
+  @Delete(':id')
   @UseGuards(AuthGuard)
   deleteUser(@Param('id') id: string) {
     return this.usersService.deleteUser(id);

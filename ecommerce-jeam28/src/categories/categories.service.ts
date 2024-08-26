@@ -22,7 +22,7 @@ export class CategoriesService {
         .insert()
         .into(Categories)
         .values({ name: element.category })
-        .onConflict(`('name) DO NOTHING`)
+        .onConflict(`("name") DO NOTHING`)
         .execute();
     });
     return 'categorias agregadas con exito';
