@@ -33,12 +33,12 @@ export class UsersService {
     return user;
   }
 
-  async createUser(user: Users) {
+  async createUser(user: Partial<Users>) {
     const newUser = await this.userRepository.save(user);
     return newUser;
   }
 
-  async updateUser(id: string, user: Users) {
+  async updateUser(id: string, user: Partial<Users>) {
     await this.userRepository.update(id, user);
     const updateUser = await this.userRepository.findOneBy({ id });
     return user;

@@ -14,6 +14,7 @@ import { UsersService } from './users.service';
 import { AuthGuard } from 'src/guard/auth.guard';
 import { ExcludeUserCredentials } from 'src/helper/interceptor';
 import { Users } from './user.entity';
+import { CreateUserDto } from './dtos/user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -31,13 +32,13 @@ export class UsersController {
 
   @Post()
   @UseInterceptors(ExcludeUserCredentials)
-  createUser(@Body() user: any) {
+  createUser(@Body() user: CreateUserDto) {
     return this.usersService.createUser(user);
   }
 
   @Put(':id')
   @UseGuards(AuthGuard)
-  updateUser(@Param('id') id: string, @Body() user: Users) {
+  updateUser(@Param('id') id: string, @Body() user: CreateUserDto) {
     return this.usersService.updateUser(id, user);
   }
 
