@@ -14,7 +14,6 @@ export class UsersService {
     const start = (page - 1) * limit;
     const end = start + +limit;
     user = user.slice(start, end);
-    // return users.map(({ password, ...user }) => user);
     return user;
   }
 
@@ -28,8 +27,6 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException('usuario no existe');
     }
-    // const { password, ...userWithoutPassword} = user
-    // return userWithoutPassword
     return user;
   }
 

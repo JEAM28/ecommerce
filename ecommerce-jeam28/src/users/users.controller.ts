@@ -38,6 +38,7 @@ export class UsersController {
 
   @Put(':id')
   @UseGuards(AuthGuard)
+  @UseInterceptors(ExcludeUserCredentials)
   updateUser(@Param('id') id: string, @Body() user: CreateUserDto) {
     return this.usersService.updateUser(id, user);
   }

@@ -9,7 +9,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
-import { Product } from './products.repository';
 import { AuthGuard } from 'src/guard/auth.guard';
 import { Products } from './products.entity';
 

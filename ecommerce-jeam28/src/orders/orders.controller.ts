@@ -1,12 +1,13 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { OrderService } from './orders.service';
+import { CreateOrderDto } from './dtos/orders.dto';
 
 @Controller('orders')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
   @Post()
-  aggOrder(@Body() order: any) {
+  aggOrder(@Body() order: CreateOrderDto) {
     const { userId, products } = order;
     return this.orderService.aggOrder(userId, products);
   }
