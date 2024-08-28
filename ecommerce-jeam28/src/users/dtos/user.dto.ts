@@ -11,6 +11,7 @@ import {
   MinLength,
   Validate,
 } from 'class-validator';
+import { MatchPassword } from 'src/decorators/matchPassword.decorator';
 // import { MatchPassword } from 'src/decorators/matchPassword.decorator';
 
 export class CreateUserDto {
@@ -45,13 +46,13 @@ export class CreateUserDto {
   @MaxLength(15)
   password: string;
 
-  //   /**
-  //    * @description este parametro recibe la password como un string de 8 a 15 caracteres que debe contener letras entre mayuscula y minuscula, numeros y simbolos
-  //    * @example "Example123#"
-  //    */
-  //   @IsNotEmpty()
-  //   @Validate(MatchPassword, ['password'])
-  //   passwordConfirmation: string;
+  /**
+   * @description este parametro recibe la password como un string de 8 a 15 caracteres que debe contener letras entre mayuscula y minuscula, numeros y simbolos
+   * @example "Example123#"
+   */
+  @IsNotEmpty()
+  @Validate(MatchPassword, ['password'])
+  passwordConfirmation: string;
 
   /**
    * @description este parametro recibe la direccion como un string de maximo 80 caracteres

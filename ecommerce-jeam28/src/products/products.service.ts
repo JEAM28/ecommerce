@@ -35,6 +35,7 @@ export class ProductsService {
     if (!product) {
       throw new BadRequestException('producto no encontrado');
     }
+    return product;
   }
 
   async aggProducts() {
