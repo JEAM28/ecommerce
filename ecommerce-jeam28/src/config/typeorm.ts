@@ -16,6 +16,7 @@ const config = {
   synchronize: true, // Solo para desarrollo, no usar en produccion
   logging: false,
   autoLoadEntities: true,
+  // dropSchema: true,
 };
 
 export default registerAs('typeorm', () => config); // esta linea es para configModule
