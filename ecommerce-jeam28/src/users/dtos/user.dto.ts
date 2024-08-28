@@ -1,5 +1,6 @@
 // import { ApiHideProperty } from '@nestjs/swagger';
 import { PickType } from '@nestjs/mapped-types';
+import { ApiHideProperty } from '@nestjs/swagger';
 import {
   IsEmail,
   IsEmpty,
@@ -93,9 +94,9 @@ export class CreateUserDto {
   @MaxLength(20)
   city: string;
 
-  //   @ApiHideProperty()
-  //   @IsEmpty()
-  //   isAdmin?: boolean;
+  @ApiHideProperty()
+  @IsEmpty()
+  Admin?: boolean;
 }
 
 export class LoginUserDto extends PickType(CreateUserDto, [

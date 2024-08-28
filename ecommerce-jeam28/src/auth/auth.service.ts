@@ -3,6 +3,7 @@ import { Users } from 'src/users/user.entity';
 import { UsersService } from 'src/users/users.service';
 import * as brypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { Admin } from 'typeorm';
 
 @Injectable()
 export class AuthService {
@@ -40,6 +41,7 @@ export class AuthService {
     const userPayload = {
       id: foundUser.id,
       email: foundUser.email,
+      Admin: foundUser.Admin,
     };
 
     const token = this.jwtService.sign(userPayload);

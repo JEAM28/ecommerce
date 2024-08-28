@@ -15,7 +15,6 @@ export class AuthController {
   }
 
   @Post('/signin')
-  @UseInterceptors(ExcludeUserCredentials)
   signIn(@Body() credentials: LoginUserDto) {
     const { email, password } = credentials;
     return this.authService.signIn(email, password);

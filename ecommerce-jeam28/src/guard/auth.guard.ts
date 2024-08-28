@@ -26,12 +26,15 @@ export class AuthGuard implements CanActivate {
 
       user.exp = new Date(user.exp * 1000);
       user.iat = new Date(user.iat * 1000);
+      if (user.Admin) {
+        user.roles = ['admin'];
+      } else {
+        user.role = ['user'];
+      }
       request.user = user;
       return true;
     } catch (error) {
       throw new UnauthorizedException('token invalido');
     }
-
-    return;
   }
 }
