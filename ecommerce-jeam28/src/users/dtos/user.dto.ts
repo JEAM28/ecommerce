@@ -1,5 +1,5 @@
 // import { ApiHideProperty } from '@nestjs/swagger';
-import { PickType } from '@nestjs/mapped-types';
+import { PickType } from '@nestjs/swagger';
 import { ApiHideProperty } from '@nestjs/swagger';
 import {
   IsEmail,
@@ -13,7 +13,6 @@ import {
   Validate,
 } from 'class-validator';
 import { MatchPassword } from 'src/decorators/matchPassword.decorator';
-// import { MatchPassword } from 'src/decorators/matchPassword.decorator';
 
 export class CreateUserDto {
   /**

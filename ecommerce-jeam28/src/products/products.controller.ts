@@ -11,7 +11,9 @@ import {
 import { ProductsService } from './products.service';
 import { AuthGuard } from 'src/guard/auth.guard';
 import { Products } from './products.entity';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('PRODUCTS')
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
@@ -34,6 +36,7 @@ export class ProductsController {
     return this.productsService.getProductById(id);
   }
 
+  @ApiBearerAuth()
   @Put(':id')
   @UseGuards(AuthGuard)
   updateProducts(@Param('id') id: string, @Body() product: Products) {
