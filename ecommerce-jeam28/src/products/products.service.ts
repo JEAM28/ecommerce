@@ -30,8 +30,8 @@ export class ProductsService {
     return products;
   }
 
-  getProductById(id: string) {
-    const product = this.productsRepository.findOneBy({ id });
+  async getProductById(id: string) {
+    const product = await this.productsRepository.findOneBy({ id });
     if (!product) {
       throw new BadRequestException('producto no encontrado');
     }

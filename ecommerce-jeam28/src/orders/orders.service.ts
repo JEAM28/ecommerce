@@ -32,7 +32,6 @@ export class OrderService {
     order.user = user;
 
     const newOrder = await this.ordersRepository.save(order);
-
     const productsArray = await Promise.all(
       products.map(async (element) => {
         const product = await this.productsRepository.findOneBy({

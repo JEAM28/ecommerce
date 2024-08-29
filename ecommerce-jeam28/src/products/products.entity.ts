@@ -32,7 +32,7 @@ export class Products {
   imgUrl: string;
 
   @ManyToMany(() => OrderDetails, (orderDetails) => orderDetails.products)
-  orderDetail: OrderDetails[];
+  orderDetails: OrderDetails[];
 
   @ManyToOne(() => Categories, (category) => category.products)
   @JoinColumn({
